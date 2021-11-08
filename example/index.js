@@ -1,6 +1,7 @@
 import { PrHttpClientBuilder, PrRequestBuilder}  from '../index.js'
 import AxiosRequestEngine from './AxiosRequestEngine.js'
 import { AxiosRequestInterceptor, AxiosReloginInterceptor, AxiosResponseInterceptor } from './AxiosInterceptor.js'
+import CancelError from '../lib/CancelError.js'
 
 const extensions = {
     showErrorToast: true,
@@ -43,7 +44,11 @@ function getExample() {
         per_page: 5
     }
     request.setUrl(url).setData(data)
-    return httpClient.execute(request)
+    httpClient.newCall(request).execute().then( res => {
+        // console.log(res)
+    }).catch( e => {
+        // console.log(e)
+    })
 }
 
 function getExampleAuthError() {
@@ -53,7 +58,11 @@ function getExampleAuthError() {
 
     }
     request.setUrl(url).setData(data)
-    return httpClient.execute(request)
+    httpClient.newCall(request).execute().then( res => {
+        // console.log(res)
+    }).catch( e => {
+        // console.log(e)
+    })
 }
 
 function postExample() {
@@ -63,26 +72,40 @@ function postExample() {
         id: '1'
     }
     request.setUrl(url).setData(data)
-    return httpClient.execute(request)
+    httpClient.newCall(request).execute().then( res => {
+        // console.log(res)
+    }).catch( e => {
+        // console.log(e)
+    })
+}
+
+function cancelExample() {
+    const request = getBuilder.build()
+    const url = ''
+    request.setUrl(url)
+    const call = httpClient.newCall(request)
+    call.execute().then(res => {
+        console.log(res)
+
+    }).catch( e => {
+        if(e instanceof CancelError) {
+            console.log('Request was cancelled')
+        } else {
+            console.log(e)
+        }
+    })
+
+    setTimeout( () => {
+        call.cancel()
+    }, 100)
 }
 
 function test() {
     init()
-    getExample().then( res => {
-        // console.log(res)
-    }).catch( e => {
-        // console.log(e)
-    })
-
-    getExampleAuthError().then( res => {
-        // console.log(res)
-    }).catch( e => {
-        // console.log(e)
-    })
-
-    postExample().then( res => {
-        // console.log(res)
-    })
+    // getExample()
+    // getExampleAuthError()
+    // postExample()
+    cancelExample()
 }
 
 test()

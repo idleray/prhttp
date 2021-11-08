@@ -35,7 +35,7 @@ export class AxiosReloginInterceptor {
           // const token = getToken()
           // newRequest.setHeader('Authorization', `Bearer ${token}`)
 
-          res = await retryClient.execute(newRequest)
+          res = await retryClient.newCall(newRequest).execute()
       } 
     }
 
