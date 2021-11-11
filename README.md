@@ -27,7 +27,7 @@ class exampleInterceptor() {
     }
 }
 ```
-### Do Http request
+### Send Http request
 ```
 import { PrHttpClientBuilder, PrRequestBuilder}  from 'prhttp'
 
@@ -43,11 +43,29 @@ getBuilder.setMethod('get')
 
 let request = getBuilder.build()
 const data = {
-data1: 'data'
+    data1: 'data'
 }
 request.setUrl('your api').setData(data)
 
-httpClient.execute(request)
+httpClient.newCall(request).execute()
+```
+### Cancellation
+You can cancel a request Using `Call.cancel`. Instead of normal return , `CancelError` will be thrown.
+```
+const call = httpClient.newCall(request)
+call.execute().then(res => {
+    console.log(res)
+}).catch( e => {
+    if(e instanceof CancelError) {
+        console.log('Request was cancelled')
+    } else {
+        console.log(e)
+    }
+})
+
+setTimeout( () => {
+    call.cancel()
+}, 100)
 ```
 
 ## Example

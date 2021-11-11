@@ -102,9 +102,9 @@ function cancelExample() {
 
 function test() {
     init()
-    // getExample()
-    // getExampleAuthError()
-    // postExample()
+    getExample()
+    getExampleAuthError()
+    postExample()
     cancelExample()
 }
 
