@@ -50,7 +50,7 @@ request.setUrl('your api').setData(data)
 httpClient.newCall(request).execute()
 ```
 ### Cancellation
-You can cancel a request Using `Call.cancel`. Instead of normal return , `CancelError` will be thrown.
+You can cancel a request Using `Call.cancel()`. Instead of normal return , `CancelError` will be thrown.
 ```
 const call = httpClient.newCall(request)
 call.execute().then(res => {
@@ -66,6 +66,51 @@ call.execute().then(res => {
 setTimeout( () => {
     call.cancel()
 }, 100)
+```
+
+### Lifecycle Bind
+`PrHttpClient` instance can be bound to a lifecycle. When the state of lifecycle is `BEFORE_UNMOUNTED`, `Call.cancel()` will be call.
+#### Vue 2.x 
+Use `Vue2lifecycleMixin` provided by prhttp.
+```
+import { Vue2lifecycleMixin } from 'prhttp/lifecycle'
+
+// PrHttpClient instance
+const httpClient = /.../
+
+export default {
+  mixins: [Vue2lifecycleMixin],
+  mounted() {
+    this.bind(httpClient)
+  }
+}
+```
+
+### Vue 3.x
+
+1、Create a composable function
+```
+// Vue3LifecycleHook.js
+import { onBeforeUnmount } from 'vue'
+import { Lifecycle } from 'prhttp/lifecycle'
+
+export function bindVue3Lifecycle(httpClient) {
+    let lifecycle = new Lifecycle()
+    onBeforeUnmount( () => {
+        lifecycle.setState(Lifecycle.STATE.BEFORE_UNMOUNTED)
+    })
+    
+    httpClient.bindLifecycle(lifecycle)
+}
+```
+
+2、Bind lifecycle in `<script setup>` or `setup()`
+```
+import { bindVue3Lifecycle } from '@/path_to/Vue3LifecycleHook.js'
+
+// PrHttpClient instance
+const httpClient = /.../
+bindVue3Lifecycle(httpClient)
 ```
 
 ## Example
