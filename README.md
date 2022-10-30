@@ -86,7 +86,7 @@ export default {
 }
 ```
 
-### Vue 3.x
+#### Vue 3.x
 
 1、Create a composable function
 ```
@@ -111,6 +111,53 @@ import { bindVue3Lifecycle } from '@/path_to/Vue3LifecycleHook.js'
 // PrHttpClient instance
 const httpClient = /.../
 bindVue3Lifecycle(httpClient)
+```
+
+#### React Class Component
+Use [HOC](https://reactjs.org/docs/higher-order-components.html) to bind Class Component.
+```javascript
+import { bindLifecycle } from 'prhttp-react'
+
+// PrHttpClient instance
+const httpClient = /.../
+
+const withClient = bindLifecycle(httpClient)
+const BoundComponent = withClient(WrappedComponent)
+
+```
+
+#### React Function Component
+Use [Effect Hook](https://reactjs.org/docs/hooks-effect.html) to bind Function Component.
+```javascript
+import { useLifecycle } from 'prhttp-react'
+import { CancelError } from 'prhttp'
+
+function useRequest() {
+  useEffect(() => {
+    getExample().then( () => {
+      // Handle response
+    }).catch( e => {
+      if(e instanceof CancelError) {
+            console.log(`Request was cancelled`)
+        } else {
+            console.log(e)
+        }
+    })
+  })
+  
+}
+
+function Home() {
+    // Call useLifecycle before request
+    useLifecycle(httpClient)
+    useRequest()
+    
+    return (
+        <div>
+            <h2>Home</h2>
+        </div>
+    );
+}
 ```
 
 ## Example
