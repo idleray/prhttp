@@ -68,97 +68,11 @@ setTimeout( () => {
 }, 100)
 ```
 
-### Lifecycle Bind
+### Lifecycle Binding
 `PrHttpClient` instance can be bound to a lifecycle. When the state of lifecycle is `BEFORE_UNMOUNTED`, `Call.cancel()` will be call.
-#### Vue 2.x 
-Use `Vue2lifecycleMixin` provided by prhttp.
-```
-import { Vue2lifecycleMixin } from 'prhttp/lifecycle'
 
-// PrHttpClient instance
-const httpClient = /.../
-
-export default {
-  mixins: [Vue2lifecycleMixin],
-  mounted() {
-    this.bind(httpClient)
-  }
-}
-```
-
-#### Vue 3.x
-
-1、Create a composable function
-```
-// Vue3LifecycleHook.js
-import { onBeforeUnmount } from 'vue'
-import { Lifecycle } from 'prhttp/lifecycle'
-
-export function bindVue3Lifecycle(httpClient) {
-    let lifecycle = new Lifecycle()
-    onBeforeUnmount( () => {
-        lifecycle.setState(Lifecycle.STATE.BEFORE_UNMOUNTED)
-    })
-    
-    httpClient.bindLifecycle(lifecycle)
-}
-```
-
-2、Bind lifecycle in `<script setup>` or `setup()`
-```
-import { bindVue3Lifecycle } from '@/path_to/Vue3LifecycleHook.js'
-
-// PrHttpClient instance
-const httpClient = /.../
-bindVue3Lifecycle(httpClient)
-```
-
-#### React Class Component
-Use [HOC](https://reactjs.org/docs/higher-order-components.html) to bind Class Component.
-```javascript
-import { bindLifecycle } from 'prhttp-react'
-
-// PrHttpClient instance
-const httpClient = /.../
-
-const withClient = bindLifecycle(httpClient)
-const BoundComponent = withClient(WrappedComponent)
-
-```
-
-#### React Function Component
-Use [Effect Hook](https://reactjs.org/docs/hooks-effect.html) to bind Function Component.
-```javascript
-import { useLifecycle } from 'prhttp-react'
-import { CancelError } from 'prhttp'
-
-function useRequest() {
-  useEffect(() => {
-    getExample().then( () => {
-      // Handle response
-    }).catch( e => {
-      if(e instanceof CancelError) {
-            console.log(`Request was cancelled`)
-        } else {
-            console.log(e)
-        }
-    })
-  })
-  
-}
-
-function Home() {
-    // Call useLifecycle before request
-    useLifecycle(httpClient)
-    useRequest()
-    
-    return (
-        <div>
-            <h2>Home</h2>
-        </div>
-    );
-}
-```
+- [React Binding](https://github.com/idleray/prhttp-react)
+- [Vue Binding](https://github.com/idleray/prhttp-vue)
 
 ## Example
 You can look at a [full example](example/index.js) which use [Axios](https://github.com/axios/axios) as engine
