@@ -1,7 +1,7 @@
-import { PrHttpClientBuilder, PrRequestBuilder}  from '../index.js'
+import { PrHttpClientBuilder, PrRequestBuilder}  from 'prhttp'
 import AxiosRequestEngine from './AxiosRequestEngine.js'
 import { AxiosRequestInterceptor, AxiosReloginInterceptor, AxiosResponseInterceptor } from './AxiosInterceptor.js'
-import CancelError from '../lib/CancelError.js'
+import { CancelError } from 'prhttp'
 
 const extensions = {
     showErrorToast: true,
@@ -37,21 +37,23 @@ function createHttpClient() {
 }
 
 function getExample() {
+    console.log('getExample')
     const request = getBuilder.build()
     const url = '/search/repositories'
     const data = {
         q: 'okhttp',
-        per_page: 5
+        per_page: 1
     }
     request.setUrl(url).setData(data)
     httpClient.newCall(request).execute().then( res => {
-        // console.log(res)
+        console.log(res)
     }).catch( e => {
-        // console.log(e)
+        console.log(e)
     })
 }
 
 function getExampleAuthError() {
+    console.log('getExampleAuthError')
     const request = getBuilder.build()
     const url = '/user'
     const data = {
@@ -59,13 +61,14 @@ function getExampleAuthError() {
     }
     request.setUrl(url).setData(data)
     httpClient.newCall(request).execute().then( res => {
-        // console.log(res)
+        console.log(res)
     }).catch( e => {
-        // console.log(e)
+        console.log(e)
     })
 }
 
 function postExample() {
+    console.log('postExample')
     const request = postBuilder.build()
     const url = '/echo/post/json'
     const data = {
@@ -73,13 +76,14 @@ function postExample() {
     }
     request.setUrl(url).setData(data)
     httpClient.newCall(request).execute().then( res => {
-        // console.log(res)
+        console.log(res)
     }).catch( e => {
-        // console.log(e)
+        console.log(e)
     })
 }
 
 function cancelExample() {
+    console.log('cancelExample')
     const request = getBuilder.build()
     const url = ''
     request.setUrl(url)
@@ -103,9 +107,9 @@ function cancelExample() {
 function test() {
     init()
     getExample()
-    getExampleAuthError()
-    postExample()
-    cancelExample()
+    // getExampleAuthError()
+    // postExample()
+    // cancelExample()
 }
 
 test()

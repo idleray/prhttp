@@ -1,4 +1,4 @@
-import {PrHttpClientBuilder} from '../index.js'
+import {PrHttpClientBuilder} from 'prhttp'
 import AxiosRequestEngine from './AxiosRequestEngine.js'
 
 function getToken() {
