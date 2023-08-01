@@ -22,7 +22,7 @@ function init() {
 
     postBuilder = new PrRequestBuilder()
     postBuilder.setMethod('post')
-            .setBaseUrl("https://reqbin.com")
+            .setBaseUrl("https://jsonplaceholder.typicode.com")
             .setContentType('application/json')
             .setExtensions(extensions)
 }
@@ -70,9 +70,11 @@ function getExampleAuthError() {
 function postExample() {
     console.log('postExample')
     const request = postBuilder.build()
-    const url = '/echo/post/json'
+    const url = '/posts'
     const data = {
-        id: '1'
+        title: 'foo',
+        body: 'bar',
+        userId: 1,
     }
     request.setUrl(url).setData(data)
     httpClient.newCall(request).execute().then( res => {

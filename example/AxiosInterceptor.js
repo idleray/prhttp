@@ -14,7 +14,7 @@ export class AxiosRequestInterceptor {
 
   async intercept (chain) {
     const newRequest = chain.request.newRequest()
-    newRequest.setHeader('Accept', 'application/vnd.github.v3+json')
+    
     // const token = getToken()
     // newRequest.setHeader('Authorization', `Bearer ${token}`)
 
