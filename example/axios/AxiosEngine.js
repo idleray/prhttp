@@ -1,5 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
+import utils from '../utils.js'
 
 export default class AxiosRequestEngine {
   constructor () {
@@ -10,18 +11,14 @@ export default class AxiosRequestEngine {
     })
   }
 
-  combineURLs(baseURL, relativeURL) {
-    return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL;
-  }
-
   async execute (request) {
-    const requestUrl = this.combineURLs(request.baseUrl, request.url)
+    const requestUrl = utils.combineURLs(request.baseUrl, request.url)
     const config = {
       url: requestUrl,
       method: request.method,
       headers: request.headers
     }
-    if (request.method === 'get') {
+    if (request.method.toUpperCase() === 'GET') {
       config.params = request.data
     } else {
       config.data = request.data

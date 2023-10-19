@@ -1,5 +1,5 @@
 import {PrHttpClientBuilder} from 'prhttp'
-import AxiosRequestEngine from './AxiosRequestEngine.js'
+import AxiosEngine from './AxiosEngine.js'
 
 function getToken() {
   let auth = ""
@@ -30,7 +30,7 @@ export class AxiosReloginInterceptor {
     if(!isLogin(res)) {
       let loginResult = await this.login()
       if(loginResult) {
-          const retryClient = new PrHttpClientBuilder().setEngine(new AxiosRequestEngine()).build()
+          const retryClient = new PrHttpClientBuilder().setEngine(new AxiosEngine()).build()
           let newRequest = request.newRequest()
           // const token = getToken()
           // newRequest.setHeader('Authorization', `Bearer ${token}`)
