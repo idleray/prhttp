@@ -21,8 +21,26 @@ function buildUrl(urlStr, params) {
     return url
 }
 
+function callWxApiToPromise(wxApi, option) {
+    let opt = option || {}
+    return new Promise((resolve, reject) => {
+        wxApi({
+            ...opt,
+            success: (res) => {
+                // console.log(res)
+                resolve(res)
+            },
+            fail: (res) => {
+                // console.log(res)
+                reject(res)
+            }
+        })
+    })
+  }
+
 export default {
     combineURLs,
     fixedEncodeURIComponent,
-    buildUrl
+    buildUrl,
+    callWxApiToPromise
 }
